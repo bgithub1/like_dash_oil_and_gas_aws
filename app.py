@@ -47,7 +47,8 @@ class MainApp():
         well_type_options = [{"label": str(WELL_TYPES[well_type]), "value": str(well_type)}for well_type in WELL_TYPES]
         # This is taken from Dash Project 
         # df1 = pd.read_csv(os.path.join(DATA_PATH,"wellspublic.csv"), low_memory=False)
-        df1 = get_df_from_dropbox(os.path.join(DATA_PATH,"wellspublic.csv"))
+#         df1 = get_df_from_dropbox(os.path.join(DATA_PATH,"wellspublic.csv"))
+        df1 = get_df_from_dropbox(DATA_PATH + "/wellspublic.csv")
         df1["Date_Well_Completed"] = pd.to_datetime(df1["Date_Well_Completed"])
         df1 = df1[df1["Date_Well_Completed"] > dt.datetime(1960, 1, 1)]
         df1['Year_Well_Completed'] = df1.Date_Well_Completed.apply(lambda d: d.year)
@@ -58,7 +59,8 @@ class MainApp():
         trim.index = trim["API_WellNo"]
         dataset = trim.to_dict(orient="index")
         # points = pickle.load(open(os.path.join(DATA_PATH,"points.pkl"), "rb"))
-        points = get_pickle_from_dropbox(os.path.join(DATA_PATH,"points.pkl"))
+#         points = get_pickle_from_dropbox(os.path.join(DATA_PATH,"points.pkl"))
+        points = get_pickle_from_dropbox(DATA_PATH+"/points.pkl")
         tgas = 'Gas Produced, MCF'
         twater = 'Water Produced, bbl'
         toil = 'Oil Produced, bbl'
@@ -201,7 +203,8 @@ class MainApp():
 #         app = dgc.dash.Dash(__name__, server=server)
         
 #         self.app = dgc.dash.Dash(__name__)
-        self.app = dgc.dash.Dash(__name__, url_base_pathname='/dev/')
+#         self.app = dgc.dash.Dash(__name__, url_base_pathname='/dev/')
+        self.app = dgc.dash.Dash(__name__)
         self.app.layout = html.Div([rall_cols,main_data.html])
         for c in callback_components:
             c.callback(self.app)
