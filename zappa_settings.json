@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "app_function": "app.server",
+        "aws_region": "us-east-1",
+        "profile_name": "bawslambda1",
+        "project_name": "like-dash-oil",
+        "runtime": "python3.6",
+        "slim_handler": true,
+        "s3_bucket": "like-dash-oil-s3"
+    }
+}
