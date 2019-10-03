@@ -32,8 +32,8 @@ import logging
 
 def init_root_logger(logfile='logfile.log',logging_level='INFO'):
     level = logging_level
-    if level is None:
-        level = logging.DEBUG
+#     if level is None:
+#         level = logging.DEBUG
     # get root level logger
     logger = logging.getLogger()
     if len(logger.handlers)>0:
@@ -1196,7 +1196,7 @@ class FiledownloadComponent(ComponentWrapper):
         def download_csv():
             value = flask.request.args.get('value')            
             fn = self.create_file_name_transformer(value)
-            print(f'FileDownLoadDiv callback file name = {fn}')
+#             print(f'FileDownLoadDiv callback file name = {fn}')
             return flask.send_file(fn,
                                mimetype='text/csv',
                                attachment_filename=fn,
@@ -1250,7 +1250,7 @@ class FileDownLoadDiv():
         def download_csv():
             value = flask.request.args.get('value')            
             fn = self.create_file_name_transformer(value)
-            print(f'FileDownLoadDiv callback file name = {fn}')
+#             print(f'FileDownLoadDiv callback file name = {fn}')
             return flask.send_file(fn,
                                mimetype='text/csv',
                                attachment_filename=fn,

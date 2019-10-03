@@ -157,7 +157,7 @@ class MainApp():
         # ************* Build row 3: the map and pie charts ********************************
         mapbox_access_token = "pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w"
         
-        layout = dict(
+        self.basic_layout = dict(
             autosize=True,
             automargin=True,
             margin=dict(l=30, r=30, b=20, t=40),
@@ -172,12 +172,10 @@ class MainApp():
                 center=dict(lon=-78.05, lat=42.54),
                 zoom=7,
             ),
-        )
-        
+        )        
         
         mapgraph = dgc.FigureComponent('mapgraph',None,self._create_map_figure,input_tuple_list=input_component_list)
-        piegraph = dgc.FigureComponent('piegraph',None,
-                lambda v:self._create_pie_figure(df,v,layout ),input_tuple_list=input_component_list)
+        piegraph = dgc.FigureComponent('piegraph',None,self._create_pie_figure,input_tuple_list=input_component_list)
         
         
         
@@ -294,6 +292,8 @@ class MainApp():
         return text_comp
 
     def _create_map_figure(self,input_list):
+        graph_layout = copy.deepcopy(self.basic_layout)
+        
         dff = self._build_df_from_input_list(input_list)
         traces = []
         for well_type, dfff in dff.groupby("Well_Type"):
@@ -308,11 +308,11 @@ class MainApp():
             )
             traces.append(trace)
     
-        figure = dict(data=traces, layout=self.app.layout)
+        figure = dict(data=traces, layout=graph_layout)
         return figure
     
-    def _create_pie_figure(self,input_list,layout):
-        layout_pie = copy.deepcopy(layout)
+    def _create_pie_figure(self,input_list):
+        layout_pie = copy.deepcopy(self.basic_layout)
         dff = self._build_df_from_input_list(input_list)
         selected = dff["API_WellNo"].values
         
