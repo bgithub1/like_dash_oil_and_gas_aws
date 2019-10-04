@@ -34,9 +34,9 @@ from controls import COUNTIES, WELL_STATUSES, WELL_TYPES, WELL_COLORS  # @Unreso
 # In[ ]:
 
 
-# DATA_PATH = os.path.abspath('../like_dash_oil_and_gas/data')
-DROPBOX_PATH = "/pyStuff/jp_notebooks/like_dash_oil_and_gas/data"
-DATA_PATH = DROPBOX_PATH
+DATA_PATH = os.path.abspath('./data')
+# DROPBOX_PATH = "/pyStuff/jp_notebooks/like_dash_oil_and_gas/data"
+# DATA_PATH = DROPBOX_PATH
 
 
 class MainApp():
@@ -46,9 +46,9 @@ class MainApp():
         well_status_options = [{"label": str(WELL_STATUSES[well_status]), "value": str(well_status)}for well_status in WELL_STATUSES]
         well_type_options = [{"label": str(WELL_TYPES[well_type]), "value": str(well_type)}for well_type in WELL_TYPES]
         # This is taken from Dash Project 
-        # df1 = pd.read_csv(os.path.join(DATA_PATH,"wellspublic.csv"), low_memory=False)
+        df1 = pd.read_csv(os.path.join(DATA_PATH,"wellspublic.csv"), low_memory=False)
 #         df1 = get_df_from_dropbox(os.path.join(DATA_PATH,"wellspublic.csv"))
-        df1 = get_df_from_dropbox(DATA_PATH + "/wellspublic.csv")
+#         df1 = get_df_from_dropbox(DATA_PATH + "/wellspublic.csv")
         df1["Date_Well_Completed"] = pd.to_datetime(df1["Date_Well_Completed"])
         df1 = df1[df1["Date_Well_Completed"] > dt.datetime(1960, 1, 1)]
         df1['Year_Well_Completed'] = df1.Date_Well_Completed.apply(lambda d: d.year)
@@ -58,9 +58,9 @@ class MainApp():
         trim = df1[["API_WellNo", "Well_Type", "Well_Name"]]
         trim.index = trim["API_WellNo"]
         dataset = trim.to_dict(orient="index")
-        # points = pickle.load(open(os.path.join(DATA_PATH,"points.pkl"), "rb"))
+        points = pickle.load(open(os.path.join(DATA_PATH,"points.pkl"), "rb"))
 #         points = get_pickle_from_dropbox(os.path.join(DATA_PATH,"points.pkl"))
-        points = get_pickle_from_dropbox(DATA_PATH+"/points.pkl")
+#         points = get_pickle_from_dropbox(DATA_PATH+"/points.pkl")
         tgas = 'Gas Produced, MCF'
         twater = 'Water Produced, bbl'
         toil = 'Oil Produced, bbl'
