@@ -40,7 +40,7 @@ DATA_PATH = os.path.abspath('./data')
 
 
 class MainApp():
-    def __init__(self):
+    def __init__(self,url_base_pathname=None):
         # Create controls
         county_options = [{"label": str(COUNTIES[county]), "value": str(county)} for county in COUNTIES]
         well_status_options = [{"label": str(WELL_STATUSES[well_status]), "value": str(well_status)}for well_status in WELL_STATUSES]
@@ -202,7 +202,10 @@ class MainApp():
         
 #         self.app = dgc.dash.Dash(__name__)
 #         self.app = dgc.dash.Dash(__name__, url_base_pathname='/dev/')
-        self.app = dgc.dash.Dash(__name__)
+        if url_base_pathname is None:
+            self.app = dgc.dash.Dash(__name__)
+        else:
+            self.app = dgc.dash.Dash(__name__, url_base_pathname=url_base_pathname)
         self.app.layout = html.Div([rall_cols,main_data.html])
         for c in callback_components:
             c.callback(self.app)
@@ -369,24 +372,24 @@ class MainApp():
         return figure
     
 
-def get_from_dropbox(file_path):
-    acctok = open('./temp_folder/dropbox_at.txt','r').read()
-    import dropbox
-    dbx = dropbox.Dropbox(acctok)
-    metadata, result = dbx.files_download(path=file_path)
-    return metadata,result
-
-def get_pickle_from_dropbox(file_path):
-    metadata,result = get_from_dropbox(file_path)  # @UnusedVariable
-    bytes_file = io.BytesIO(result.content)
-    ret = pickle.load(bytes_file)
-    return ret    
-
-def get_df_from_dropbox(file_path):
-    metadata,result = get_from_dropbox(file_path)  # @UnusedVariable
-    text_file = io.StringIO(result.content.decode())
-    df = pd.read_csv(text_file)    
-    return df    
+# def get_from_dropbox(file_path):
+#     acctok = open('./temp_folder/dropbox_at.txt','r').read()
+#     import dropbox
+#     dbx = dropbox.Dropbox(acctok)
+#     metadata, result = dbx.files_download(path=file_path)
+#     return metadata,result
+# 
+# def get_pickle_from_dropbox(file_path):
+#     metadata,result = get_from_dropbox(file_path)  # @UnusedVariable
+#     bytes_file = io.BytesIO(result.content)
+#     ret = pickle.load(bytes_file)
+#     return ret    
+# 
+# def get_df_from_dropbox(file_path):
+#     metadata,result = get_from_dropbox(file_path)  # @UnusedVariable
+#     text_file = io.StringIO(result.content.decode())
+#     df = pd.read_csv(text_file)    
+#     return df    
 
 
 
@@ -408,7 +411,7 @@ def dgr(my_id,children,parent_class=None,child_class=None):
     return html.Div([html.Div(c,className=child_class) for c in children],id=my_id,className=parent_class)
 
 
-app = MainApp().app
+app = MainApp(url_base_pathname='/oilgas/').app
 server = app.server
     
 if __name__=='__main__':
