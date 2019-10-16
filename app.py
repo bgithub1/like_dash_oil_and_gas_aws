@@ -86,7 +86,8 @@ class MainApp():
         
         # Define the static components
         # ********************** plotly logo ****************************
-        img = html.Img(src=dgc.dash.Dash().get_asset_url("dash-logo.png"),className='plogo')
+#         img = html.Img(src=dgc.dash.Dash().get_asset_url("dash-logo.png"),className='plogo')        
+        img = html.Img(src="/static/dash-logo.png",className='plogo')
         # ********************** title div ********************************
         title = html.Div([html.H3("New York Oil And Gas",className='ogtitle'),html.H5("Production Overview",className='ogtitle')])
         # *****You ************* link to plotly info ***********************
