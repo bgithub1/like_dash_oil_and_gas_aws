@@ -41,6 +41,16 @@ DATA_PATH = os.path.abspath('./data')
 
 class MainApp():
     def __init__(self,url_base_pathname=None):
+#         server = flask.Flask(__name__)
+#         app = dgc.dash.Dash(__name__, server=server)
+        
+#         self.app = dgc.dash.Dash(__name__)
+#         self.app = dgc.dash.Dash(__name__, url_base_pathname='/dev/')
+        if url_base_pathname is None:
+            self.app = dgc.dash.Dash(__name__)
+        else:
+            self.app = dgc.dash.Dash(__name__, url_base_pathname=url_base_pathname)
+        
         # Create controls
         county_options = [{"label": str(COUNTIES[county]), "value": str(county)} for county in COUNTIES]
         well_status_options = [{"label": str(WELL_STATUSES[well_status]), "value": str(well_status)}for well_status in WELL_STATUSES]
@@ -86,8 +96,8 @@ class MainApp():
         
         # Define the static components
         # ********************** plotly logo ****************************
-#         img = html.Img(src=dgc.dash.Dash().get_asset_url("dash-logo.png"),className='plogo')        
-        img = html.Img(src="/static/dash-logo.png",className='plogo')
+        img = html.Img(src=self.app.get_asset_url("dash-logo.png"),className='plogo')        
+#         img = html.Img(src="/static/dash-logo.png",className='plogo')
         # ********************** title div ********************************
         title = html.Div([html.H3("New York Oil And Gas",className='ogtitle'),html.H5("Production Overview",className='ogtitle')])
         # *****You ************* link to plotly info ***********************
@@ -198,15 +208,6 @@ class MainApp():
         rall_rows = dgr('rall_rows',[r1,r2,r3,rbot])
         rall_cols = dgr('rall_cols',[rside,rall_rows,rside],parent_class=pnnc)
 
-#         server = flask.Flask(__name__)
-#         app = dgc.dash.Dash(__name__, server=server)
-        
-#         self.app = dgc.dash.Dash(__name__)
-#         self.app = dgc.dash.Dash(__name__, url_base_pathname='/dev/')
-        if url_base_pathname is None:
-            self.app = dgc.dash.Dash(__name__)
-        else:
-            self.app = dgc.dash.Dash(__name__, url_base_pathname=url_base_pathname)
         self.app.layout = html.Div([rall_cols,main_data.html])
         for c in callback_components:
             c.callback(self.app)
